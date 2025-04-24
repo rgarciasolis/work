@@ -1,14 +1,116 @@
 <!DOCTYPE html>
-<html lang='en'>
- <head>
-  <title>Rodrigo García Portfolio</title>
-  <meta charset='utf-8'>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dos Columnas Dinámicas</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .left, .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    h1, p {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
   </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <h1 id="title">Título dinámico</h1>
+      <p id="paragraph">Este párrafo también usa una fuente aleatoria complementaria.</p>
+    </div>
+    <div class="right"></div>
+  </div>
+
   <script>
+    // Algunas combinaciones bonitas de Google Fonts
+    const fontPairs = [
+      ['Lobster', 'Open Sans'],
+      ['Oswald', 'Merriweather'],
+      ['Pacifico', 'Roboto'],
+      ['Playfair Display', 'Lato'],
+      ['Bebas Neue', 'Nunito'],
+      ['Abril Fatface', 'Source Sans Pro'],
+      ['Raleway', 'PT Serif']
+    ];
+
+    // Función para obtener un color aleatorio en formato HSL
+    function getRandomHSL() {
+      const hue = Math.floor(Math.random() * 360);
+      return { h: hue, s: 70, l: 50 }; // saturación y luminosidad fijas
+    }
+
+    // Convertir HSL a string CSS
+    function hslToCSS({h, s, l}) {
+      return `hsl(${h}, ${s}%, ${l}%)`;
+    }
+
+    // Calcular el color complementario
+    function getComplementaryHSL(hsl) {
+      return { h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l };
+    }
+
+    // Decidir color de texto basado en luminosidad
+    function getTextColor(hsl) {
+      return hsl.l > 60 ? '#000' : '#fff';
+    }
+
+    // Elegir fuente al azar
+    const selectedFonts = fontPairs[Math.floor(Math.random() * fontPairs.length)];
+    const [titleFont, paragraphFont] = selectedFonts;
+
+    // Crear y agregar el link de Google Fonts
+    const fontLink = document.createElement('link');
+    fontLink.rel = 'stylesheet';
+    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
+    document.head.appendChild(fontLink);
+
+    // Aplicar las fuentes una vez que se cargue el DOM
+    window.onload = () => {
+      const title = document.getElementById('title');
+      const paragraph = document.getElementById('paragraph');
+      const left = document.querySelector('.left');
+      const right = document.querySelector('.right');
+
+      // Establecer fuentes
+      title.style.fontFamily = `'${titleFont}', sans-serif`;
+      paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
+
+      // Establecer colores
+      const rightColorHSL = getRandomHSL();
+      const leftColorHSL = getComplementaryHSL(rightColorHSL);
+
+      right.style.backgroundColor = hslToCSS(rightColorHSL);
+      left.style.backgroundColor = hslToCSS(leftColorHSL);
+
+      // Texto con buen contraste
+      const textColor = getTextColor(leftColorHSL);
+      title.style.color = textColor;
+      paragraph.style.color = textColor;
+    };
   </script>
- </head>
- <body>
-   <h1>Hola!</h1>
- </body>
+</body>
 </html>
