@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rodrigo García - Product Designer</title>
   <style>
@@ -38,29 +38,23 @@
       align-items: flex-start;
       flex-direction: column;
       padding: 50px;
-      opacity: 0;
-      background-color: white;
-      animation: fadeIn 1s ease forwards, backgroundFade 1s ease forwards;
+      transition: background-color 1s ease;
       overflow: hidden;
     }
 
-    .right {
-      animation-delay: 0.3s;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    @keyframes backgroundFade {
-      from { background-color: white; }
-      to { background-color: var(--final-bg); }
-    }
-
     h1, p {
-      margin-bottom: 1rem;
-      text-align: left;
       max-width: 100%;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 4rem);
+      margin-bottom: 1.2em; /* 120% del tamaño del texto */
+    }
+
+    p {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      line-height: 1.5; /* 150% del tamaño de fuente */
     }
 
     .text-wrapper {
@@ -71,20 +65,12 @@
       flex-direction: column;
       justify-content: flex-start;
     }
-
-    h1 {
-      font-size: clamp(1.8rem, 5vw, 4rem);
-    }
-
-    p {
-      font-size: clamp(1rem, 3vw, 1.5rem);
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="left text-wrapper">
-      <h1 id="title">Hi!!</h1>
+      <h1 id="title">Hi 👋</h1>
       <p id="paragraph">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the hosting service, it's now a static page. If you'd like to see my work, feel free to request a PDF version. Throughout my career, I've held key design roles at companies like Hanzo, Billin, and Banco Santander, and contributed to projects for clients such as Telefónica, The Saudi Investment Bank, and Cuidado con el Perro. My journey has been about bridging design and technology to create impactful digital experiences.</p>
     </div>
     <div class="right"></div>
@@ -131,6 +117,7 @@
       const left = document.querySelector('.left');
       const right = document.querySelector('.right');
 
+      // Aplicar fuentes
       title.style.fontFamily = `'${titleFont}', sans-serif`;
       paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
 
@@ -141,36 +128,13 @@
       const rightColor = hslToCSS(rightColorHSL);
       const leftColor = hslToCSS(leftColorHSL);
 
-      // Usamos variable CSS para animación
-      document.documentElement.style.setProperty('--final-bg', rightColor);
-
       right.style.backgroundColor = rightColor;
       left.style.backgroundColor = leftColor;
 
       const textColor = getTextColor(leftColorHSL);
       title.style.color = textColor;
       paragraph.style.color = textColor;
-
-      // Autoajuste del contenedor para que no genere scroll
-      fitTextToContainer(title, left);
-      fitTextToContainer(paragraph, left);
     };
-
-    function fitTextToContainer(element, container) {
-      const maxHeight = container.clientHeight;
-      const maxWidth = container.clientWidth;
-
-      let fontSize = 100;
-      element.style.fontSize = fontSize + "px";
-
-      while (
-        (element.scrollHeight > maxHeight * 0.4 || element.scrollWidth > maxWidth) &&
-        fontSize > 10
-      ) {
-        fontSize -= 1;
-        element.style.fontSize = fontSize + "px";
-      }
-    }
   </script>
 </body>
 </html>
