@@ -59,7 +59,7 @@
     }
 
     p {
-      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-size: clamp(1rem, 3vw, 2.5rem);
       line-height: 1.5; /* 150% del tamaño de fuente */
     }
 
@@ -84,18 +84,41 @@
 
   <script>
     const fontPairs = [
-      ['Lobster', 'Open Sans'],
-      ['Oswald', 'Merriweather'],
-      ['Pacifico', 'Roboto'],
-      ['Playfair Display', 'Lato'],
-      ['Bebas Neue', 'Nunito'],
-      ['Abril Fatface', 'Source Sans Pro'],
-      ['Raleway', 'PT Serif']
+        ['Montserrat Black', 'Raleway Regular'],
+        ['Lobster', 'Open Sans Regular'],
+        ['Ubuntu Bold', 'Nanum Gothic'],
+        ['Bebas Neue', 'Source Sans Pro'],
+        ['Arvo', 'Roboto Regular'],
+        ['Monoton', 'Rubik'],
+        ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'],
+        ['Courgette', 'Libre Baskerville'],
+        ['Roboto Black', 'Roboto Mono Light'],
+        ['Abril Fatface', 'Work Sans'],
+        ['Merriweather Black', 'Lora Regular'],
+        ['Roboto Mono Bold', 'Spectral Light'],
+        ['Oswald Bold', 'Nunito Semibold'],
+        ['Permanent Marker', 'ABeeZee'],
+        ['Archivo Black', 'Hind'],
+        ['Gravitas One', 'Poppins'],
+        ['Alfa Slab One', 'Chivo'],
+        ['Architects Daughter', 'Abel'],
+        ['Fjalla One', 'Merriweather Sans'],
+        ['Rokkitt Black', 'Raleway'],
+        ['Poiret One Bold', 'Didact Gothic'],
+        ['Bangers', 'Playfair Display'],
+        ['Ultra', 'Slabo 13px'],
+        ['Francois One', 'Karla'],
+        ['Fugaz One', 'Lato'],
+        ['Bevan', 'Pontano Sans'],
+        ['Nixie One', 'Prompt'],
+        ['Sacramento', 'Barlow'],
+        ['Sansita Black', 'Overpass'],
+        ['Vollkorn SC Black', 'PT Sans']
     ];
 
     function getRandomHSL() {
       const hue = Math.floor(Math.random() * 360);
-      return { h: hue, s: 70, l: 50 };
+      return { h: hue, s: 40, l: 50 };
     }
 
     function hslToCSS({ h, s, l }) {
