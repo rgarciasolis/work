@@ -223,24 +223,20 @@
     const totalImages = 44;
     let imagesLoaded = 0;
 
-    for (let i = 1; i <= totalImages; i++) {
-      const img = new Image();
-      img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
-      img.classList.add('floating-img');
-      img.onload = () => {
-        imagesLoaded++;
-        progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
+    for (let j = 1; j <= totalImages; j++) {
+  const floatImg = document.createElement('img');
+  floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
+  floatImg.classList.add('floating-img');
+  const delay = Math.random() * 2; // Reducido para aparición una tras otra
+  floatImg.style.left = `${Math.random() * 100}%`;
+  floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
+  floatImg.style.animationDelay = `${delay}s`;
+  floatImg.style.zIndex = 0;
 
-        if (imagesLoaded === totalImages) {
-          setTimeout(() => {
-            preloader.style.opacity = '0';
-            container.style.visibility = 'visible';
-            setTimeout(() => preloader.remove(), 500);
-            for (let j = 1; j <= totalImages; j++) {
-              const floatImg = document.createElement('img');
-              floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
-              floatImg.classList.add('floating-img');
-              const delay = Math.random() * 2; // Reducido para aparición una tras otra
-              floatImg.style.left = `${Math.random() * 100}%`;
-              floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
-              float
+  // Ajustar la posición Y para que no se solapen
+  floatImg.style.bottom = `${-j * 40}px`; // Desplazar las imágenes en la animación
+  right.appendChild(floatImg);
+}
+  </script>
+</body>
+</html>
