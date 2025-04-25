@@ -17,25 +17,33 @@
       font-family: sans-serif;
     }
 
-    .preloader {
+    #preloader {
       position: fixed;
+      z-index: 9999;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--left-color);
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
-      transition: all 1s ease;
+      transition: opacity 0.5s ease;
     }
 
-    .preloader-bar {
-      width: 0%;
-      height: 6px;
-      background-color: var(--right-color);
-      transition: width 0.4s ease;
+    #progress-bar {
+      width: 80%;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #progress {
+      height: 100%;
+      background-color: white;
+      width: 0;
+      transition: width 0.3s ease;
     }
 
     .container {
@@ -44,7 +52,7 @@
       height: 100vh;
       width: 100vw;
       transition: all 0.5s ease;
-      position: relative;
+      visibility: hidden;
     }
 
     @media (max-width: 1024px) {
@@ -52,26 +60,29 @@
         flex-direction: column;
       }
 
-      .left, .right {
+      .right {
         padding: 24px !important;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .left {
-        height: 100vh;
-        z-index: 2;
-      }
-
-      .right {
+        background: white;
+        margin: 24px;
+        width: calc(100% - 48px);
+        height: calc(100% - 48px);
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
+        z-index: 2;
       }
 
-      .text-wrapper {
-        overflow: visible !important;
+      .floating-img {
+        position: absolute;
+        z-index: 1;
       }
     }
 
@@ -84,6 +95,7 @@
       padding: 50px;
       transition: background-color 1s ease;
       overflow: hidden;
+      position: relative;
     }
 
     h1, p {
@@ -112,10 +124,9 @@
 
     .floating-img {
       position: absolute;
-      bottom: -30%;
-      animation: floatUp 15s linear infinite;
-      opacity: 1;
-      transition: opacity 0.3s ease;
+      opacity: 0;
+      animation: floatUp linear infinite;
+      will-change: transform, opacity;
       max-width: 33%;
       height: auto;
     }
@@ -125,130 +136,121 @@
         transform: translateY(100vh);
         opacity: 0;
       }
-      5% {
+      20% {
         opacity: 1;
       }
-      95% {
+      80% {
         opacity: 1;
       }
       100% {
-        transform: translateY(-10vh);
+        transform: translateY(-100%);
         opacity: 0;
       }
     }
   </style>
 </head>
 <body>
-  <div class="preloader">
-    <div class="preloader-bar" id="preloaderBar"></div>
+  <div id="preloader">
+    <div id="progress-bar">
+      <div id="progress"></div>
+    </div>
   </div>
+
   <div class="container">
     <div class="left text-wrapper">
-      <h1 id="title">Hi, wellcome!! 👋</h1>
+      <h1 id="title">Hi, welcome 👋</h1>
       <p id="paragraph">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the portfolio service, it's now a static page. If you'd like to see my work, feel free to request a PDF version. Throughout my career, I've held key design roles at companies like Hanzo, Billin, and Banco Santander, and contributed to projects for clients such as Telefónica, The Saudi Investment Bank, and Cuidado con el Perro. My journey has been about bridging design and technology to create impactful digital experiences.</p>
     </div>
-    <div class="right" id="imageContainer"></div>
+    <div class="right" id="right-container"></div>
   </div>
 
   <script>
     const fontPairs = [
-      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'], ['Ubuntu Bold', 'Nanum Gothic'],
-      ['Bebas Neue', 'Source Sans Pro'], ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
-      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'], ['Roboto Mono Bold', 'Spectral Light'],
-      ['Oswald Bold', 'Nunito Semibold'], ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'], ['Alfa Slab One', 'Chivo'],
-      ['Fjalla One', 'Merriweather Sans'], ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
-      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'], ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
-      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'], ['Vollkorn SC Black', 'PT Sans']
+      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'],
+      ['Ubuntu Bold', 'Nanum Gothic'], ['Bebas Neue', 'Source Sans Pro'],
+      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
+      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'],
+      ['Roboto Mono Bold', 'Spectral Light'], ['Oswald Bold', 'Nunito Semibold'],
+      ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'],
+      ['Alfa Slab One', 'Chivo'], ['Fjalla One', 'Merriweather Sans'],
+      ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
+      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'],
+      ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
+      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'],
+      ['Vollkorn SC Black', 'PT Sans']
     ];
 
     const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
     fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
     document.head.appendChild(fontLink);
 
-    function getRandomHSL() {
+    const getRandomHSL = () => {
       const hue = Math.floor(Math.random() * 360);
       return { h: hue, s: 40, l: 50 };
-    }
-
-    function hslToCSS({ h, s, l }) {
-      return `hsl(${h}, ${s}%, ${l}%)`;
-    }
-
-    function getComplementaryHSL(hsl) {
-      return { h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l };
-    }
-
-    function getTextColor(hsl) {
-      return hsl.l > 60 ? '#000' : '#fff';
-    }
-
-    window.onload = async () => {
-      const title = document.getElementById('title');
-      const paragraph = document.getElementById('paragraph');
-      const left = document.querySelector('.left');
-      const right = document.querySelector('.right');
-      const preloader = document.querySelector('.preloader');
-      const bar = document.getElementById('preloaderBar');
-      const root = document.documentElement;
-
-      const rightColorHSL = getRandomHSL();
-      const leftColorHSL = getComplementaryHSL(rightColorHSL);
-
-      const rightColor = hslToCSS(rightColorHSL);
-      const leftColor = hslToCSS(leftColorHSL);
-      const textColor = getTextColor(leftColorHSL);
-
-      root.style.setProperty('--left-color', leftColor);
-      root.style.setProperty('--right-color', rightColor);
-
-      title.style.fontFamily = `'${titleFont}', sans-serif`;
-      paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
-
-      left.style.backgroundColor = leftColor;
-      right.style.backgroundColor = rightColor;
-
-      title.style.color = textColor;
-      paragraph.style.color = textColor;
-
-      const imageContainer = document.getElementById('imageContainer');
-      let imagesLoaded = 0;
-
-      for (let i = 1; i <= 44; i++) {
-        const img = new Image();
-        const src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
-        img.src = src;
-        img.classList.add('floating-img');
-
-        const x = Math.random() * 100;
-        const delay = Math.random() * 10;
-        const duration = 10 + Math.random() * 20;
-
-        img.style.left = `${x}%`;
-        img.style.animationDelay = `${delay}s`;
-        img.style.animationDuration = `${duration}s`;
-
-        img.onload = () => {
-          imagesLoaded++;
-          bar.style.width = `${(imagesLoaded / 44) * 100}%`;
-          if (imagesLoaded === 44) {
-            setTimeout(() => {
-              preloader.style.opacity = '0';
-              preloader.style.pointerEvents = 'none';
-              setTimeout(() => preloader.remove(), 1000);
-            }, 500);
-          }
-        };
-
-        if (window.innerWidth > 1024) {
-          imageContainer.appendChild(img);
-        } else {
-          document.body.appendChild(img);
-        }
-      }
     };
+
+    const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
+    const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
+    const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
+
+    const title = document.getElementById('title');
+    const paragraph = document.getElementById('paragraph');
+    const left = document.querySelector('.left');
+    const right = document.getElementById('right-container');
+    const container = document.querySelector('.container');
+    const preloader = document.getElementById('preloader');
+    const progress = document.getElementById('progress');
+
+    const rightColorHSL = getRandomHSL();
+    const leftColorHSL = getComplementaryHSL(rightColorHSL);
+    const rightColor = hslToCSS(rightColorHSL);
+    const leftColor = hslToCSS(leftColorHSL);
+    const textColor = getTextColor(leftColorHSL);
+
+    document.body.style.backgroundColor = rightColor;
+    preloader.style.backgroundColor = rightColor;
+    progress.style.backgroundColor = leftColor;
+
+    title.style.fontFamily = `'${titleFont}', sans-serif`;
+    paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
+    left.style.backgroundColor = leftColor;
+    right.style.backgroundColor = rightColor;
+    title.style.color = textColor;
+    paragraph.style.color = textColor;
+
+    const totalImages = 44;
+    let imagesLoaded = 0;
+
+    for (let i = 1; i <= totalImages; i++) {
+      const img = new Image();
+      img.src = `/img/portfolio_${String(i).padStart(2, '0')}.jpg`;
+      img.classList.add('floating-img');
+      img.onload = () => {
+        imagesLoaded++;
+        progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
+
+        if (imagesLoaded === totalImages) {
+          setTimeout(() => {
+            preloader.style.opacity = '0';
+            container.style.visibility = 'visible';
+            setTimeout(() => preloader.remove(), 500);
+            for (let j = 1; j <= totalImages; j++) {
+              const floatImg = document.createElement('img');
+              floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
+              floatImg.classList.add('floating-img');
+              const delay = Math.random() * 20;
+              floatImg.style.left = `${Math.random() * 100}%`;
+              floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
+              floatImg.style.animationDelay = `${delay}s`;
+              floatImg.style.zIndex = 0;
+              right.appendChild(floatImg);
+            }
+          }, 300);
+        }
+      };
+    }
   </script>
 </body>
 </html>
