@@ -17,21 +17,59 @@
       font-family: sans-serif;
     }
 
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--left-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: all 1s ease;
+    }
+
+    .preloader-bar {
+      width: 0%;
+      height: 6px;
+      background-color: var(--right-color);
+      transition: width 0.4s ease;
+    }
+
     .container {
       display: flex;
       flex-direction: row;
       height: 100vh;
       width: 100vw;
       transition: all 0.5s ease;
+      position: relative;
     }
 
     @media (max-width: 1024px) {
       .container {
         flex-direction: column;
       }
+
       .left, .right {
         padding: 24px !important;
       }
+
+      .left {
+        height: 100vh;
+        z-index: 2;
+      }
+
+      .right {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
       .text-wrapper {
         overflow: visible !important;
       }
@@ -55,12 +93,12 @@
 
     h1 {
       font-size: clamp(1.8rem, 5vw, 4rem);
-      margin-bottom: 0.6em; /* 60% del tamaño del texto */
+      margin-bottom: 1.2em;
     }
 
     p {
       font-size: clamp(1rem, 3vw, 1.6rem);
-      line-height: 1.8; /* 180% del tamaño de fuente */
+      line-height: 1.5;
     }
 
     .text-wrapper {
@@ -71,47 +109,64 @@
       flex-direction: column;
       justify-content: flex-start;
     }
+
+    .floating-img {
+      position: absolute;
+      bottom: -30%;
+      animation: floatUp 15s linear infinite;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      max-width: 33%;
+      height: auto;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      5% {
+        opacity: 1;
+      }
+      95% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="preloader">
+    <div class="preloader-bar" id="preloaderBar"></div>
+  </div>
   <div class="container">
     <div class="left text-wrapper">
-      <h1 id="title">Hi 👋</h1>
+      <h1 id="title">Hi, wellcome 👋</h1>
       <p id="paragraph">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the portfolio service, it's now a static page. If you'd like to see my work, feel free to request a PDF version. Throughout my career, I've held key design roles at companies like Hanzo, Billin, and Banco Santander, and contributed to projects for clients such as Telefónica, The Saudi Investment Bank, and Cuidado con el Perro. My journey has been about bridging design and technology to create impactful digital experiences.</p>
     </div>
-    <div class="right"></div>
+    <div class="right" id="imageContainer"></div>
   </div>
 
   <script>
     const fontPairs = [
-        ['Montserrat Black', 'Raleway Regular'],
-        ['Lobster', 'Open Sans Regular'],
-        ['Ubuntu Bold', 'Nanum Gothic'],
-        ['Bebas Neue', 'Source Sans Pro'],
-        ['Monoton', 'Rubik'],
-        ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'],
-        ['Roboto Black', 'Roboto Mono Light'],
-        ['Abril Fatface', 'Work Sans'],
-        ['Merriweather Black', 'Lora Regular'],
-        ['Roboto Mono Bold', 'Spectral Light'],
-        ['Oswald Bold', 'Nunito Semibold'],
-        ['Permanent Marker', 'ABeeZee'],
-        ['Archivo Black', 'Hind'],
-        ['Gravitas One', 'Poppins'],
-        ['Alfa Slab One', 'Chivo'],
-        ['Architects Daughter', 'Abel'],
-        ['Fjalla One', 'Merriweather Sans'],
-        ['Rokkitt Black', 'Raleway'],
-        ['Poiret One Bold', 'Didact Gothic'],
-        ['Ultra', 'Slabo 13px'],
-        ['Francois One', 'Karla'],
-        ['Fugaz One', 'Lato'],
-        ['Bevan', 'Pontano Sans'],
-        ['Nixie One', 'Prompt'],
-        ['Sacramento', 'Barlow'],
-        ['Sansita Black', 'Overpass'],
-        ['Vollkorn SC Black', 'PT Sans']
+      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'], ['Ubuntu Bold', 'Nanum Gothic'],
+      ['Bebas Neue', 'Source Sans Pro'], ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
+      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'], ['Roboto Mono Bold', 'Spectral Light'],
+      ['Oswald Bold', 'Nunito Semibold'], ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'], ['Alfa Slab One', 'Chivo'],
+      ['Fjalla One', 'Merriweather Sans'], ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
+      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'], ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
+      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'], ['Vollkorn SC Black', 'PT Sans']
     ];
+
+    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
+
+    const fontLink = document.createElement('link');
+    fontLink.rel = 'stylesheet';
+    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
+    document.head.appendChild(fontLink);
 
     function getRandomHSL() {
       const hue = Math.floor(Math.random() * 360);
@@ -130,36 +185,69 @@
       return hsl.l > 60 ? '#000' : '#fff';
     }
 
-    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-
-    const fontLink = document.createElement('link');
-    fontLink.rel = 'stylesheet';
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
-    document.head.appendChild(fontLink);
-
-    window.onload = () => {
+    window.onload = async () => {
       const title = document.getElementById('title');
       const paragraph = document.getElementById('paragraph');
       const left = document.querySelector('.left');
       const right = document.querySelector('.right');
+      const preloader = document.querySelector('.preloader');
+      const bar = document.getElementById('preloaderBar');
+      const root = document.documentElement;
 
-      // Aplicar fuentes
-      title.style.fontFamily = `'${titleFont}', sans-serif`;
-      paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
-
-      // Colores complementarios
       const rightColorHSL = getRandomHSL();
       const leftColorHSL = getComplementaryHSL(rightColorHSL);
 
       const rightColor = hslToCSS(rightColorHSL);
       const leftColor = hslToCSS(leftColorHSL);
-
-      right.style.backgroundColor = rightColor;
-      left.style.backgroundColor = leftColor;
-
       const textColor = getTextColor(leftColorHSL);
+
+      root.style.setProperty('--left-color', leftColor);
+      root.style.setProperty('--right-color', rightColor);
+
+      title.style.fontFamily = `'${titleFont}', sans-serif`;
+      paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
+
+      left.style.backgroundColor = leftColor;
+      right.style.backgroundColor = rightColor;
+
       title.style.color = textColor;
       paragraph.style.color = textColor;
+
+      const imageContainer = document.getElementById('imageContainer');
+      let imagesLoaded = 0;
+
+      for (let i = 1; i <= 44; i++) {
+        const img = new Image();
+        const src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
+        img.src = src;
+        img.classList.add('floating-img');
+
+        const x = Math.random() * 100;
+        const delay = Math.random() * 10;
+        const duration = 10 + Math.random() * 20;
+
+        img.style.left = `${x}%`;
+        img.style.animationDelay = `${delay}s`;
+        img.style.animationDuration = `${duration}s`;
+
+        img.onload = () => {
+          imagesLoaded++;
+          bar.style.width = `${(imagesLoaded / 44) * 100}%`;
+          if (imagesLoaded === 44) {
+            setTimeout(() => {
+              preloader.style.opacity = '0';
+              preloader.style.pointerEvents = 'none';
+              setTimeout(() => preloader.remove(), 1000);
+            }, 500);
+          }
+        };
+
+        if (window.innerWidth > 1024) {
+          imageContainer.appendChild(img);
+        } else {
+          document.body.appendChild(img);
+        }
+      }
     };
   </script>
 </body>
