@@ -166,121 +166,114 @@
   </div>
 
   <script>
-    const fontPairs = [
-      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'],
-      ['Ubuntu Bold', 'Nanum Gothic'], ['Bebas Neue', 'Source Sans Pro'],
-      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
-      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'],
-      ['Roboto Mono Bold', 'Spectral Light'], ['Oswald Bold', 'Nunito Semibold'],
-      ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'],
-      ['Alfa Slab One', 'Chivo'], ['Fjalla One', 'Merriweather Sans'],
-      ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
-      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'],
-      ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
-      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'],
-      ['Vollkorn SC Black', 'PT Sans']
-    ];
+  // --- UTILIDADES ---
+  const fontPairs = [/*...*/]; // usa tu array existente aquí
 
-    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-    const fontLink = document.createElement('link');
-    fontLink.rel = 'stylesheet';
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
-    document.head.appendChild(fontLink);
+  const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
+  const fontLink = document.createElement("link");
+  fontLink.rel = "stylesheet";
+  fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
+  document.head.appendChild(fontLink);
 
-    const getRandomHSL = () => {
-      const hue = Math.floor(Math.random() * 360);
-      return { h: hue, s: 40, l: 50 };
-    };
+  const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
+  const getRandomHSL = () => {
+    const hue = Math.floor(Math.random() * 360);
+    return { h: hue, s: 40, l: 50 };
+  };
+  const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
+  const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
 
-    const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-    const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
-    const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
+  // --- SETUP INICIAL ---
+  const rightColorHSL = getRandomHSL();
+  const leftColorHSL = getComplementaryHSL(rightColorHSL);
+  const rightColor = hslToCSS(rightColorHSL);
+  const leftColor = hslToCSS(leftColorHSL);
+  const textColor = getTextColor(leftColorHSL);
 
-    const title = document.getElementById('title');
-    const paragraph = document.getElementById('paragraph');
-    const left = document.querySelector('.left');
-    const right = document.getElementById('right-container');
-    const container = document.querySelector('.container');
-    const preloader = document.getElementById('preloader');
-    const progress = document.getElementById('progress');
+  const title = document.getElementById('title');
+  const paragraph = document.getElementById('paragraph');
+  const left = document.querySelector('.left');
+  const right = document.getElementById('right-container');
+  const container = document.querySelector('.container');
+  const preloader = document.getElementById('preloader');
+  const progress = document.getElementById('progress');
 
-    const rightColorHSL = getRandomHSL();
-    const leftColorHSL = getComplementaryHSL(rightColorHSL);
-    const rightColor = hslToCSS(rightColorHSL);
-    const leftColor = hslToCSS(leftColorHSL);
-    const textColor = getTextColor(leftColorHSL);
+  document.body.style.backgroundColor = rightColor;
+  preloader.style.backgroundColor = rightColor;
+  progress.style.backgroundColor = leftColor;
 
-    document.body.style.backgroundColor = rightColor;
-    preloader.style.backgroundColor = rightColor;
-    progress.style.backgroundColor = leftColor;
+  title.style.fontFamily = `'${titleFont}', sans-serif`;
+  paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
+  left.style.backgroundColor = leftColor;
+  right.style.backgroundColor = rightColor;
+  title.style.color = textColor;
+  paragraph.style.color = textColor;
 
-    title.style.fontFamily = `'${titleFont}', sans-serif`;
-    paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    left.style.backgroundColor = leftColor;
-    right.style.backgroundColor = rightColor;
-    title.style.color = textColor;
-    paragraph.style.color = textColor;
+  // --- PRELOADER Y CARGA ---
+  const totalImages = 44;
+  let imagesLoaded = 0;
 
-    const totalImages = 44;
-    let imagesLoaded = 0;
-    const columns = window.innerWidth <= 1024 ? 6 : 8;
+  const imagePaths = Array.from({ length: totalImages }, (_, i) =>
+    `img/portfolio_${String(i + 1).padStart(2, '0')}.png`
+  );
 
-    let usedPositions = Array.from({ length: columns }, () => 0);
-
-    function getNextColumn() {
-      let min = Math.min(...usedPositions);
-      return usedPositions.findIndex(v => v === min);
-    }
-
-    function updateProgressBar(percent) {
-      progress.style.width = `${percent}%`;
-    }
-
-    function showImage(j) {
-      const floatImg = document.createElement('img');
-      floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
-      floatImg.classList.add('floating-img');
-
-      const col = getNextColumn();
-      const row = usedPositions[col]++;
-
-      const colWidth = 100 / columns;
-      const leftPercent = col * colWidth + colWidth / 2;
-      const baseDelay = 0.5; // seconds
-
-      floatImg.style.left = `${leftPercent}%`;
-      floatImg.style.transform = `translateX(-50%)`;
-      floatImg.style.zIndex = 0;
-
-      if (window.innerWidth > 1024) {
-        floatImg.style.animation = `floatUp 30s linear ${row * baseDelay}s forwards`;
-      } else {
-        floatImg.style.top = `${(row * 20) % window.innerHeight}px`;
-        floatImg.style.left = `${(col * 20) % window.innerWidth}px`;
-      }
-
-      right.appendChild(floatImg);
-    }
-
-    for (let i = 1; i <= totalImages; i++) {
+  const preloadImages = imagePaths.map(src => {
+    return new Promise(resolve => {
       const img = new Image();
-      img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
+      img.src = src;
       img.onload = () => {
         imagesLoaded++;
-        updateProgressBar((imagesLoaded / totalImages) * 100);
-
-        if (imagesLoaded === totalImages) {
-          setTimeout(() => {
-            preloader.style.opacity = '0';
-            setTimeout(() => {
-              preloader.remove();
-              container.style.visibility = 'visible';
-              for (let j = 1; j <= totalImages; j++) showImage(j);
-            }, 500);
-          }, 200);
-        }
+        progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
+        resolve(src);
       };
+    });
+  });
+
+  // --- ANIMACIÓN IMÁGENES UNA A UNA ---
+  async function floatImagesSequentially(sources) {
+    for (const src of sources) {
+      const img = document.createElement("img");
+      img.src = src;
+      img.classList.add("floating-img");
+      img.style.position = 'absolute';
+      img.style.left = `${Math.random() * 80 + 10}%`;
+      img.style.bottom = '-20%';
+      img.style.opacity = '0';
+      img.style.transition = 'transform 20s linear, opacity 2s ease';
+      right.appendChild(img);
+
+      // Forzar reflow para aplicar transición
+      void img.offsetHeight;
+
+      // Mostrar imagen
+      img.style.opacity = '1';
+      img.style.transform = `translateY(-120vh)`;
+
+      // Esperar a que llegue al 50% de la pantalla antes de añadir la siguiente
+      await new Promise(resolve => {
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.boundingClientRect.top <= window.innerHeight / 2) {
+            observer.disconnect();
+            resolve();
+          }
+        });
+        observer.observe(img);
+      });
+
+      // Opcional: Eliminar después de salir por arriba
+      setTimeout(() => img.remove(), 20000);
     }
-  </script>
+  }
+
+  // --- INICIO ---
+  Promise.all(preloadImages).then(loadedSources => {
+    preloader.style.opacity = '0';
+    setTimeout(() => {
+      preloader.remove();
+      container.style.visibility = 'visible';
+      floatImagesSequentially(loadedSources);
+    }, 500);
+  });
+</script>
 </body>
 </html>
