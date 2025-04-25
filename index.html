@@ -166,7 +166,20 @@
   </div>
 
   <script>
-  const fontPairs = [/* tu array original aquí */];
+  const fontPairs = [
+      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'],
+      ['Ubuntu Bold', 'Nanum Gothic'], ['Bebas Neue', 'Source Sans Pro'],
+      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
+      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'],
+      ['Roboto Mono Bold', 'Spectral Light'], ['Oswald Bold', 'Nunito Semibold'],
+      ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'],
+      ['Alfa Slab One', 'Chivo'], ['Fjalla One', 'Merriweather Sans'],
+      ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
+      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'],
+      ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
+      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'],
+      ['Vollkorn SC Black', 'PT Sans']
+    ];
 
   const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
   const fontLink = document.createElement("link");
