@@ -224,19 +224,19 @@
     let imagesLoaded = 0;
 
     for (let j = 1; j <= totalImages; j++) {
-  const floatImg = document.createElement('img');
-  floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
-  floatImg.classList.add('floating-img');
-  const delay = Math.random() * 2; // Reducido para aparición una tras otra
-  floatImg.style.left = `${Math.random() * 100}%`;
-  floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
-  floatImg.style.animationDelay = `${delay}s`;
-  floatImg.style.zIndex = 0;
+      const floatImg = document.createElement('img');
+      floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
+      floatImg.classList.add('floating-img');
+      const delay = Math.random() * 2; // Reducido para aparición una tras otra
+      floatImg.style.left = `${Math.random() * 100}%`;
+      floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
+      floatImg.style.animationDelay = `${delay}s`;
+      floatImg.style.zIndex = 0;
 
-  // Ajustar la posición Y para que no se solapen
-  floatImg.style.bottom = `${-j * 40}px`; // Desplazar las imágenes en la animación
-  right.appendChild(floatImg);
-}
+      // Ajustar la posición Y para que no se solapen
+      floatImg.style.bottom = `${-j * 40}px`; // Desplazar las imágenes en la animación
+      right.appendChild(floatImg);
+    }
   </script>
 </body>
 </html>
