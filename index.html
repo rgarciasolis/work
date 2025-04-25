@@ -260,22 +260,21 @@
     img.style.transition = 'transform 20s linear, opacity 2s ease';
     right.appendChild(img);
 
-    // Fuerza el repaint antes de animar
+    // Fuerza el repaint
     void img.offsetHeight;
 
-    // Aparece y empieza a flotar
     img.style.opacity = '1';
     img.style.transform = `translateY(-120vh)`;
 
-    // Espera a que haya pasado completamente por el borde inferior + 40px
+    // Espera a que haya pasado el umbral antes de mostrar la siguiente
     await new Promise(resolve => {
-      const observer = new IntersectionObserver(([entry]) => {
-        if (entry.boundingClientRect.top < window.innerHeight - 40) {
-          observer.disconnect();
+      const checkInterval = setInterval(() => {
+        const rect = img.getBoundingClientRect();
+        if (rect.bottom < window.innerHeight - 40) {
+          clearInterval(checkInterval);
           resolve();
         }
-      }, { threshold: 0 });
-      observer.observe(img);
+      }, 100);
     });
 
     setTimeout(() => img.remove(), 20000);
