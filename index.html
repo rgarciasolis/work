@@ -164,79 +164,49 @@
     <div class="right" id="right-container"></div>
   </div>
 
-  <script>
-    const fontPairs = [
-      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'],
-      ['Ubuntu Bold', 'Nanum Gothic'], ['Bebas Neue', 'Source Sans Pro'],
-      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
-      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'],
-      ['Roboto Mono Bold', 'Spectral Light'], ['Oswald Bold', 'Nunito Semibold'],
-      ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'],
-      ['Alfa Slab One', 'Chivo'], ['Fjalla One', 'Merriweather Sans'],
-      ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
-      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'],
-      ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
-      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'],
-      ['Vollkorn SC Black', 'PT Sans']
-    ];
+ <script>
+  const totalImages = 44;
+  let imagesLoaded = 0;
 
-    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-    const fontLink = document.createElement('link');
-    fontLink.rel = 'stylesheet';
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
-    document.head.appendChild(fontLink);
+  // Mostrar progreso de carga con animación suave
+  function updateProgressBar(percent) {
+    progress.style.width = `${percent}%`;
+  }
 
-    const getRandomHSL = () => {
-      const hue = Math.floor(Math.random() * 360);
-      return { h: hue, s: 40, l: 50 };
+  for (let i = 1; i <= totalImages; i++) {
+    const img = new Image();
+    img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
+    img.classList.add('floating-img');
+    img.onload = () => {
+      imagesLoaded++;
+      const percent = (imagesLoaded / totalImages) * 100;
+      updateProgressBar(percent);
+
+      if (imagesLoaded === totalImages) {
+        // Esperar un instante antes de mostrar el contenido
+        setTimeout(() => {
+          // Eliminar preloader y mostrar contenido
+          preloader.style.transition = 'opacity 0.5s ease';
+          preloader.style.opacity = '0';
+          setTimeout(() => {
+            preloader.remove();
+            container.style.visibility = 'visible';
+
+            // Añadir imágenes flotantes
+            for (let j = 1; j <= totalImages; j++) {
+              const floatImg = document.createElement('img');
+              floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
+              floatImg.classList.add('floating-img');
+              floatImg.style.left = `${Math.random() * 100}%`;
+              floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
+              floatImg.style.animationDelay = `${j * 1}s`;
+              right.appendChild(floatImg);
+            }
+          }, 500);
+        }, 300);
+      }
     };
-
-    const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-    const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
-    const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
-
-    const title = document.getElementById('title');
-    const paragraph = document.getElementById('paragraph');
-    const left = document.querySelector('.left');
-    const right = document.getElementById('right-container');
-    const container = document.querySelector('.container');
-    const preloader = document.getElementById('preloader');
-    const progress = document.getElementById('progress');
-
-    const rightColorHSL = getRandomHSL();
-    const leftColorHSL = getComplementaryHSL(rightColorHSL);
-    const rightColor = hslToCSS(rightColorHSL);
-    const leftColor = hslToCSS(leftColorHSL);
-    const textColor = getTextColor(leftColorHSL);
-
-    document.body.style.backgroundColor = rightColor;
-    preloader.style.backgroundColor = rightColor;
-    progress.style.backgroundColor = leftColor;
-
-    title.style.fontFamily = `'${titleFont}', sans-serif`;
-    paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    left.style.backgroundColor = leftColor;
-    right.style.backgroundColor = rightColor;
-    title.style.color = textColor;
-    paragraph.style.color = textColor;
-
-    const totalImages = 44;
-    let imagesLoaded = 0;
-
-    for (let j = 1; j <= totalImages; j++) {
-      const floatImg = document.createElement('img');
-      floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
-      floatImg.classList.add('floating-img');
-      const delay = Math.random() * 2; // Reducido para aparición una tras otra
-      floatImg.style.left = `${Math.random() * 100}%`;
-      floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
-      floatImg.style.animationDelay = `${delay}s`;
-      floatImg.style.zIndex = 0;
-
-      // Ajustar la posición Y para que no se solapen
-      floatImg.style.bottom = `${-j * 40}px`; // Desplazar las imágenes en la animación
-      right.appendChild(floatImg);
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
