@@ -114,9 +114,9 @@
     }
 
     .text-wrapper {
-      width: 100%;
+      width: 88%;
       height: 100%;
-      overflow: hidden;
+      overflow: visible;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -225,7 +225,7 @@
 
     for (let i = 1; i <= totalImages; i++) {
       const img = new Image();
-      img.src = `/img/portfolio_${String(i).padStart(2, '0')}.jpg`;
+      img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
       img.classList.add('floating-img');
       img.onload = () => {
         imagesLoaded++;
@@ -240,17 +240,7 @@
               const floatImg = document.createElement('img');
               floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
               floatImg.classList.add('floating-img');
-              const delay = Math.random() * 20;
+              const delay = Math.random() * 2; // Reducido para aparición una tras otra
               floatImg.style.left = `${Math.random() * 100}%`;
               floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
-              floatImg.style.animationDelay = `${delay}s`;
-              floatImg.style.zIndex = 0;
-              right.appendChild(floatImg);
-            }
-          }, 300);
-        }
-      };
-    }
-  </script>
-</body>
-</html>
+              float
