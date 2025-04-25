@@ -83,6 +83,7 @@
       .floating-img {
         position: absolute;
         z-index: 1;
+        animation: none !important;
       }
     }
 
@@ -125,7 +126,6 @@
     .floating-img {
       position: absolute;
       opacity: 0;
-      animation: floatUp linear infinite;
       will-change: transform, opacity;
       max-width: 33%;
       height: auto;
@@ -136,10 +136,10 @@
         transform: translateY(100vh);
         opacity: 0;
       }
-      20% {
+      10% {
         opacity: 1;
       }
-      80% {
+      90% {
         opacity: 1;
       }
       100% {
@@ -222,22 +222,52 @@
 
     const totalImages = 44;
     let imagesLoaded = 0;
-    const columns = 6;
-    let usedPositions = Array.from({ length: columns }, () => 0); // Para evitar superposición
+    const columns = window.innerWidth <= 1024 ? 6 : 8;
+    const right = document.getElementById('right-container');
+    const progress = document.getElementById('progress');
+    const preloader = document.getElementById('preloader');
+    const container = document.querySelector('.container');
 
-    function updateProgressBar(percent) {
-      progress.style.width = `${percent}%`;
-    }
+    let usedPositions = Array.from({ length: columns }, () => 0);
 
     function getNextColumn() {
       let min = Math.min(...usedPositions);
       return usedPositions.findIndex(v => v === min);
     }
 
+    function updateProgressBar(percent) {
+      progress.style.width = `${percent}%`;
+    }
+
+    function showImage(j) {
+      const floatImg = document.createElement('img');
+      floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
+      floatImg.classList.add('floating-img');
+
+      const col = getNextColumn();
+      const row = usedPositions[col]++;
+
+      const colWidth = 100 / columns;
+      const leftPercent = col * colWidth + colWidth / 2;
+      const baseDelay = 0.5; // seconds
+
+      floatImg.style.left = `${leftPercent}%`;
+      floatImg.style.transform = `translateX(-50%)`;
+      floatImg.style.zIndex = 0;
+
+      if (window.innerWidth > 1024) {
+        floatImg.style.animation = `floatUp 30s linear ${row * baseDelay}s forwards`;
+      } else {
+        floatImg.style.top = `${(row * 20) % window.innerHeight}px`;
+        floatImg.style.left = `${(col * 20) % window.innerWidth}px`;
+      }
+
+      right.appendChild(floatImg);
+    }
+
     for (let i = 1; i <= totalImages; i++) {
       const img = new Image();
       img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
-      img.classList.add('floating-img');
       img.onload = () => {
         imagesLoaded++;
         updateProgressBar((imagesLoaded / totalImages) * 100);
@@ -248,28 +278,9 @@
             setTimeout(() => {
               preloader.remove();
               container.style.visibility = 'visible';
-
-              for (let j = 1; j <= totalImages; j++) {
-                const floatImg = document.createElement('img');
-                floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
-                floatImg.classList.add('floating-img');
-
-                const col = getNextColumn();
-                usedPositions[col] += 1;
-
-                const columnWidth = 100 / columns;
-                const leftPercent = col * columnWidth + columnWidth / 2;
-
-                floatImg.style.left = `${leftPercent}%`;
-                floatImg.style.transform = `translateX(-50%)`;
-                floatImg.style.animationDuration = `30s`;
-                floatImg.style.animationDelay = `${j * 2}s`; // Salen una a una
-                floatImg.style.zIndex = 0;
-
-                right.appendChild(floatImg);
-              }
+              for (let j = 1; j <= totalImages; j++) showImage(j);
             }, 500);
-          }, 300);
+          }, 200);
         }
       };
     }
