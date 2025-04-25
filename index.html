@@ -130,6 +130,7 @@
       will-change: transform, opacity;
       max-width: 33%;
       height: auto;
+      border-radius: 8px;
     }
 
     @keyframes floatUp {
@@ -246,36 +247,40 @@
   });
 
   async function floatImagesSequentially(imageList) {
-    const shuffledImages = shuffleArray([...imageList]);
+  const shuffledImages = shuffleArray([...imageList]);
 
-    for (const src of shuffledImages) {
-      const img = document.createElement("img");
-      img.src = src;
-      img.classList.add("floating-img");
-      img.style.position = 'absolute';
-      img.style.left = `${Math.random() * 80 + 10}%`;
-      img.style.bottom = '-20%';
-      img.style.opacity = '0';
-      img.style.transition = 'transform 20s linear, opacity 2s ease';
-      right.appendChild(img);
+  for (const src of shuffledImages) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.classList.add("floating-img");
+    img.style.position = 'absolute';
+    img.style.left = `${Math.random() * 80 + 10}%`;
+    img.style.bottom = '-20%';
+    img.style.opacity = '0';
+    img.style.transition = 'transform 20s linear, opacity 2s ease';
+    right.appendChild(img);
 
-      void img.offsetHeight;
-      img.style.opacity = '1';
-      img.style.transform = `translateY(-120vh)`;
+    // Fuerza el repaint antes de animar
+    void img.offsetHeight;
 
-      await new Promise(resolve => {
-        const observer = new IntersectionObserver(([entry]) => {
-          if (entry.boundingClientRect.top <= window.innerHeight / 2) {
-            observer.disconnect();
-            resolve();
-          }
-        });
-        observer.observe(img);
-      });
+    // Aparece y empieza a flotar
+    img.style.opacity = '1';
+    img.style.transform = `translateY(-120vh)`;
 
-      setTimeout(() => img.remove(), 20000);
-    }
+    // Espera a que haya pasado completamente por el borde inferior + 40px
+    await new Promise(resolve => {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.boundingClientRect.top < window.innerHeight - 40) {
+          observer.disconnect();
+          resolve();
+        }
+      }, { threshold: 0 });
+      observer.observe(img);
+    });
+
+    setTimeout(() => img.remove(), 20000);
   }
+}
 
   Promise.all(preloadImages).then(loadedSources => {
     preloader.style.opacity = '0';
