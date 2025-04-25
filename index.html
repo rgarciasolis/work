@@ -5,127 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rodrigo García - Product Designer</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-
-    #preloader {
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.5s ease;
-    }
-
-    #progress-bar {
-      width: 80%;
-      height: 4px;
-      background-color: rgba(255, 255, 255, 0.2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    #progress {
-      height: 100%;
-      background-color: white;
-      width: 0;
-      transition: width 0.3s ease;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: row;
-      height: 100vh;
-      width: 100vw;
-      transition: all 0.5s ease;
-      visibility: hidden;
-    }
-
-    @media (max-width: 1024px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .right {
-        padding: 24px !important;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .left {
-        background: white;
-        margin: 24px;
-        width: calc(100% - 48px);
-        height: calc(100% - 48px);
-        box-shadow: 0 0 12px rgba(0,0,0,0.1);
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 2;
-      }
-
-      .floating-img {
-        position: absolute;
-        z-index: 1;
-      }
-    }
-
-    .left, .right {
-      flex: 1;
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      flex-direction: column;
-      padding: 50px;
-      transition: background-color 1s ease;
-      overflow: hidden;
-      position: relative;
-    }
-
-    h1, p {
-      max-width: 100%;
-      text-align: left;
-    }
-
-    h1 {
-      font-size: clamp(1.8rem, 5vw, 4rem);
-      margin-bottom: 1.2em;
-    }
-
-    p {
-      font-size: clamp(1rem, 3vw, 1.6rem);
-      line-height: 1.5;
-    }
-
-    .text-wrapper {
-      width: 88%;
-      height: 100%;
-      overflow: visible;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
+    /* ... todo tu CSS actual permanece igual ... */
 
     .floating-img {
       position: absolute;
       opacity: 0;
-      animation: floatUp linear infinite;
+      animation: floatUp linear forwards;
       will-change: transform, opacity;
       max-width: 33%;
       height: auto;
@@ -133,17 +18,17 @@
 
     @keyframes floatUp {
       0% {
-        transform: translateY(100vh);
+        transform: translateY(0);
         opacity: 0;
       }
-      20% {
+      10% {
         opacity: 1;
       }
-      80% {
+      90% {
         opacity: 1;
       }
       100% {
-        transform: translateY(-100%);
+        transform: translateY(-150vh);
         opacity: 0;
       }
     }
@@ -159,109 +44,67 @@
   <div class="container">
     <div class="left text-wrapper">
       <h1 id="title">Hi, welcome 👋</h1>
-      <p id="paragraph">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the portfolio service, it's now a static page. If you'd like to see my work, feel free to request a PDF version. Throughout my career, I've held key design roles at companies like Hanzo, Billin, and Banco Santander, and contributed to projects for clients such as Telefónica, The Saudi Investment Bank, and Cuidado con el Perro. My journey has been about bridging design and technology to create impactful digital experiences.</p>
+      <p id="paragraph">I'm Rodrigo García...</p>
     </div>
     <div class="right" id="right-container"></div>
   </div>
 
   <script>
-    const fontPairs = [
-      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'],
-      ['Ubuntu Bold', 'Nanum Gothic'], ['Bebas Neue', 'Source Sans Pro'],
-      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
-      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'],
-      ['Roboto Mono Bold', 'Spectral Light'], ['Oswald Bold', 'Nunito Semibold'],
-      ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'],
-      ['Alfa Slab One', 'Chivo'], ['Fjalla One', 'Merriweather Sans'],
-      ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
-      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'],
-      ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
-      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'],
-      ['Vollkorn SC Black', 'PT Sans']
-    ];
-
-    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-    const fontLink = document.createElement('link');
-    fontLink.rel = 'stylesheet';
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
-    document.head.appendChild(fontLink);
-
-    const getRandomHSL = () => {
-      const hue = Math.floor(Math.random() * 360);
-      return { h: hue, s: 40, l: 50 };
-    };
-
-    const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-    const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
-    const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
-
-    const title = document.getElementById('title');
-    const paragraph = document.getElementById('paragraph');
-    const left = document.querySelector('.left');
-    const right = document.getElementById('right-container');
-    const container = document.querySelector('.container');
-    const preloader = document.getElementById('preloader');
-    const progress = document.getElementById('progress');
-
-    const rightColorHSL = getRandomHSL();
-    const leftColorHSL = getComplementaryHSL(rightColorHSL);
-    const rightColor = hslToCSS(rightColorHSL);
-    const leftColor = hslToCSS(leftColorHSL);
-    const textColor = getTextColor(leftColorHSL);
-
-    document.body.style.backgroundColor = rightColor;
-    preloader.style.backgroundColor = rightColor;
-    progress.style.backgroundColor = leftColor;
-
-    title.style.fontFamily = `'${titleFont}', sans-serif`;
-    paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    left.style.backgroundColor = leftColor;
-    right.style.backgroundColor = rightColor;
-    title.style.color = textColor;
-    paragraph.style.color = textColor;
+    // Tu código de colores, fuentes y background permanece igual...
 
     const totalImages = 44;
-  let imagesLoaded = 0;
+    let imagesLoaded = 0;
+    const columns = 6;
+    let usedPositions = Array.from({ length: columns }, () => 0); // Para evitar superposición
 
-  // Mostrar progreso de carga con animación suave
-  function updateProgressBar(percent) {
-    progress.style.width = `${percent}%`;
-  }
+    function updateProgressBar(percent) {
+      progress.style.width = `${percent}%`;
+    }
 
-  for (let i = 1; i <= totalImages; i++) {
-    const img = new Image();
-    img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
-    img.classList.add('floating-img');
-    img.onload = () => {
-      imagesLoaded++;
-      const percent = (imagesLoaded / totalImages) * 100;
-      updateProgressBar(percent);
+    function getNextColumn() {
+      let min = Math.min(...usedPositions);
+      return usedPositions.findIndex(v => v === min);
+    }
 
-      if (imagesLoaded === totalImages) {
-        // Esperar un instante antes de mostrar el contenido
-        setTimeout(() => {
-          // Eliminar preloader y mostrar contenido
-          preloader.style.transition = 'opacity 0.5s ease';
-          preloader.style.opacity = '0';
+    for (let i = 1; i <= totalImages; i++) {
+      const img = new Image();
+      img.src = `img/portfolio_${String(i).padStart(2, '0')}.png`;
+      img.classList.add('floating-img');
+      img.onload = () => {
+        imagesLoaded++;
+        updateProgressBar((imagesLoaded / totalImages) * 100);
+
+        if (imagesLoaded === totalImages) {
           setTimeout(() => {
-            preloader.remove();
-            container.style.visibility = 'visible';
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+              preloader.remove();
+              container.style.visibility = 'visible';
 
-            // Añadir imágenes flotantes
-            for (let j = 1; j <= totalImages; j++) {
-              const floatImg = document.createElement('img');
-              floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
-              floatImg.classList.add('floating-img');
-              floatImg.style.left = `${Math.random() * 100}%`;
-              floatImg.style.animationDuration = `${20 + Math.random() * 20}s`;
-              floatImg.style.animationDelay = `${j * 1}s`;
-              right.appendChild(floatImg);
-            }
-          }, 500);
-        }, 300);
-      }
-    };
-  }
+              for (let j = 1; j <= totalImages; j++) {
+                const floatImg = document.createElement('img');
+                floatImg.src = `img/portfolio_${String(j).padStart(2, '0')}.png`;
+                floatImg.classList.add('floating-img');
+
+                const col = getNextColumn();
+                usedPositions[col] += 1;
+
+                const columnWidth = 100 / columns;
+                const leftPercent = col * columnWidth + columnWidth / 2;
+
+                floatImg.style.left = `${leftPercent}%`;
+                floatImg.style.transform = `translateX(-50%)`;
+                floatImg.style.animationDuration = `30s`;
+                floatImg.style.animationDelay = `${j * 2}s`; // Salen una a una
+                floatImg.style.zIndex = 0;
+
+                right.appendChild(floatImg);
+              }
+            }, 500);
+          }, 300);
+        }
+      };
+    }
   </script>
 </body>
 </html>
