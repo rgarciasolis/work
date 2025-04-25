@@ -166,8 +166,7 @@
   </div>
 
   <script>
-  // --- UTILIDADES ---
-  const fontPairs = [/*...*/]; // usa tu array existente aquí
+  const fontPairs = [/* tu array original aquí */];
 
   const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
   const fontLink = document.createElement("link");
@@ -176,14 +175,10 @@
   document.head.appendChild(fontLink);
 
   const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-  const getRandomHSL = () => {
-    const hue = Math.floor(Math.random() * 360);
-    return { h: hue, s: 40, l: 50 };
-  };
+  const getRandomHSL = () => ({ h: Math.floor(Math.random() * 360), s: 40, l: 50 });
   const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
   const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
 
-  // --- SETUP INICIAL ---
   const rightColorHSL = getRandomHSL();
   const leftColorHSL = getComplementaryHSL(rightColorHSL);
   const rightColor = hslToCSS(rightColorHSL);
@@ -209,13 +204,21 @@
   title.style.color = textColor;
   paragraph.style.color = textColor;
 
-  // --- PRELOADER Y CARGA ---
   const totalImages = 44;
   let imagesLoaded = 0;
 
   const imagePaths = Array.from({ length: totalImages }, (_, i) =>
     `img/portfolio_${String(i + 1).padStart(2, '0')}.png`
   );
+
+  // Barajar el orden de aparición
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
   const preloadImages = imagePaths.map(src => {
     return new Promise(resolve => {
@@ -229,9 +232,10 @@
     });
   });
 
-  // --- ANIMACIÓN IMÁGENES UNA A UNA ---
-  async function floatImagesSequentially(sources) {
-    for (const src of sources) {
+  async function floatImagesSequentially(imageList) {
+    const shuffledImages = shuffleArray([...imageList]);
+
+    for (const src of shuffledImages) {
       const img = document.createElement("img");
       img.src = src;
       img.classList.add("floating-img");
@@ -242,14 +246,10 @@
       img.style.transition = 'transform 20s linear, opacity 2s ease';
       right.appendChild(img);
 
-      // Forzar reflow para aplicar transición
       void img.offsetHeight;
-
-      // Mostrar imagen
       img.style.opacity = '1';
       img.style.transform = `translateY(-120vh)`;
 
-      // Esperar a que llegue al 50% de la pantalla antes de añadir la siguiente
       await new Promise(resolve => {
         const observer = new IntersectionObserver(([entry]) => {
           if (entry.boundingClientRect.top <= window.innerHeight / 2) {
@@ -260,12 +260,10 @@
         observer.observe(img);
       });
 
-      // Opcional: Eliminar después de salir por arriba
       setTimeout(() => img.remove(), 20000);
     }
   }
 
-  // --- INICIO ---
   Promise.all(preloadImages).then(loadedSources => {
     preloader.style.opacity = '0';
     setTimeout(() => {
