@@ -63,7 +63,7 @@
 
     @media (max-width: 1024px) {
       .container {
-        flex-direction: column;
+        display: block;
       }
 
       .right {
@@ -72,6 +72,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: visible;
+        position: absolute !important;
+        height: 100% !important;
+        width: 100%;
+        top: 0;
+        left: 0;
       }
 
       .left {
@@ -79,11 +85,13 @@
         margin: 24px;
         width: calc(100% - 48px) !important;
         height: calc(100% - 48px) !important;
+        height: auto !important;
         position: absolute;
         padding: 24px !important;
         top: 0;
         left: 0;
         z-index: 2;
+        opacity: 0.9;
       }
 
       .floating-img {
