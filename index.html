@@ -17,6 +17,12 @@
       font-family: sans-serif;
     }
 
+    a{
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
     #preloader {
       position: fixed;
       z-index: 9999;
@@ -113,6 +119,7 @@
     p {
       font-size: clamp(1rem, 3vw, 1.6rem);
       line-height: 1.5;
+      margin-bottom: 1.2em;
     }
 
     .text-wrapper {
@@ -161,24 +168,36 @@
   <div class="container">
     <div class="left text-wrapper">
       <h1 id="title">Hi, welcome 👋</h1>
-      <p id="paragraph">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the portfolio service, it's now a static page. If you'd like to see my work, feel free to request a PDF version. Throughout my career, I've held key design roles at companies like Hanzo, Billin, and Banco Santander, and contributed to projects for clients such as Telefónica, The Saudi Investment Bank, and Cuidado con el Perro. My journey has been about bridging design and technology to create impactful digital experiences.</p>
+      <p class="paragraph1">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the portfolio service, it's now a static page. If you'd like to see my work, feel free to <a class="enlace" href="https://www.linkedin.com/in/rodrigogarciasolis/" target="_blank">request a PDF version</a>.</p>
+      <p class="paragraph2"> Over the years, I’ve worked at design agencies, big companies, and early-stage startups. I design with users in mind, always. My tech background helps me imagine solutions that not only work, but also align with business goals and fit the realities of the product roadmap.</p>
     </div>
     <div class="right" id="right-container"></div>
   </div>
 
   <script>
   const fontPairs = [
-      ['Montserrat Black', 'Raleway Regular'], ['Lobster', 'Open Sans Regular'],
-      ['Ubuntu Bold', 'Nanum Gothic'], ['Bebas Neue', 'Source Sans Pro'],
-      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], ['Roboto Black', 'Roboto Mono Light'],
-      ['Abril Fatface', 'Work Sans'], ['Merriweather Black', 'Lora Regular'],
-      ['Roboto Mono Bold', 'Spectral Light'], ['Oswald Bold', 'Nunito Semibold'],
-      ['Permanent Marker', 'ABeeZee'], ['Archivo Black', 'Hind'],
-      ['Alfa Slab One', 'Chivo'], ['Fjalla One', 'Merriweather Sans'],
-      ['Rokkitt Black', 'Raleway'], ['Poiret One Bold', 'Didact Gothic'],
-      ['Ultra', 'Slabo 13px'], ['Francois One', 'Karla'],
-      ['Fugaz One', 'Lato'], ['Bevan', 'Pontano Sans'],
-      ['Nixie One', 'Prompt'], ['Sansita Black', 'Overpass'],
+      ['Montserrat Black', 'Raleway Regular'], 
+      ['Lobster', 'Open Sans Regular'],
+      ['Ubuntu Bold', 'Nanum Gothic'], 
+      ['Bebas Neue', 'Source Sans Pro'],
+      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], 
+      ['Roboto Black', 'Roboto Mono Light'],
+      ['Abril Fatface', 'Work Sans'], 
+      ['Merriweather Black', 'Lora Regular'],
+      ['Roboto Mono Bold', 'Spectral Light'], 
+      ['Oswald Bold', 'Nunito Semibold'],
+      ['Permanent Marker', 'ABeeZee'], 
+      ['Archivo Black', 'Hind'],
+      ['Alfa Slab One', 'Chivo'], 
+      ['Fjalla One', 'Merriweather Sans'],
+      ['Rokkitt Black', 'Raleway'], 
+      ['Poiret One Bold', 'Didact Gothic'],
+      ['Ultra', 'Slabo 13px'], 
+      ['Francois One', 'Karla'],
+      ['Fugaz One', 'Lato'], 
+      ['Bevan', 'Pontano Sans'],
+      ['Nixie One', 'Prompt'], 
+      ['Sansita Black', 'Overpass'],
       ['Vollkorn SC Black', 'PT Sans']
     ];
 
@@ -200,7 +219,9 @@
   const textColor = getTextColor(leftColorHSL);
 
   const title = document.getElementById('title');
-  const paragraph = document.getElementById('paragraph');
+  const paragraph = document.querySelector('.paragraph1');
+  const paragraph2 = document.querySelector('.paragraph2');
+  const enlaceColor = document.querySelector('.enlace');
   const left = document.querySelector('.left');
   const right = document.getElementById('right-container');
   const container = document.querySelector('.container');
@@ -213,10 +234,13 @@
 
   title.style.fontFamily = `'${titleFont}', sans-serif`;
   paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
+  paragraph2.style.fontFamily = `'${paragraphFont}', sans-serif`;
   left.style.backgroundColor = leftColor;
   right.style.backgroundColor = rightColor;
   title.style.color = textColor;
   paragraph.style.color = textColor;
+  paragraph2.style.color = textColor;
+  enlaceColor.style.color = rightColor;
 
   const totalImages = 44;
   let imagesLoaded = 0;
