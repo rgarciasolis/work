@@ -121,7 +121,9 @@
 
       ul {
       position: absolute;
-      bottom: 50px;
+      bottom: 185px;
+      right: 0;
+      transform: rotate(-90deg);
         li {
           list-style: none;
           display: inline;
@@ -160,6 +162,14 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      justify-content: space-evenly;
+      #title, .paragraph1, .paragraph2 {
+        width: 90%;
+        font-size: clamp(1.1rem, 1.5vw, 3.5vh)
+        margin: 0;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
     }
 
     .floating-img {
@@ -243,7 +253,7 @@
   document.head.appendChild(fontLink);
 
   const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-  const getRandomHSL = () => ({ h: Math.floor(Math.random() * 360), s: 40, l: 50 });
+  const getRandomHSL = () => ({ h: Math.floor(Math.random() * 360), s: 25, l: 50 });
   const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
   const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
 
