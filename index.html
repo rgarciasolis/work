@@ -87,7 +87,7 @@
       max-width: 100%;
     text-align: left;
     margin-bottom: 0;
-    font-size: 14vh;
+    font-size: 16.8vh;
     transform: rotate(180deg);
     /* position: relative; */
     top: 0;
@@ -98,12 +98,14 @@
     line-height: 1em;
     writing-mode: vertical-rl;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: -0.8rem;
     }
 
     p, ul li {
       max-width: 100%;
       text-align: left;
-      font-size: 1.8vw;
+      font-size: 1.7vw;
       line-height: 1.5;
       margin-bottom: 1.2em;
     }
@@ -115,7 +117,7 @@
       overflow: visible;
       display: flex;
       justify-content: start;
-      margin: 80px 0;
+      margin: 36px 0;
     }
 
     .text-wrapper #title, 
@@ -123,7 +125,7 @@
     .text-wrapper .paragraph2 {
       width: 90%;
       line-height: 1.4;
-/*      text-transform: uppercase;*/
+      letter-spacing: -0.01rem;
     }
 
     /* Navegación */
@@ -177,8 +179,8 @@
 
       .left {
         background: white;
-        margin: 24px;
-        width: calc(100% - 48px) !important;
+        margin: 12px;
+        width: calc(100% - 24px) !important;
         height: auto !important;
         position: relative;
         padding: 24px !important;
@@ -202,16 +204,22 @@
         right: auto;
       }
       
-      h1, p, ul li {
-        font-size: 2.1vh !important;
+      p, ul li {
+        font-size: 2vh !important;
       }
       h1 {
         writing-mode: horizontal-tb;
         transform: none;
-        font-size: 10vh !important;
+        font-size: 7.5vh !important;
         writing-mode: initial;
         position: relative;
         left: 0;
+        letter-spacing: -0.4rem;
+      }
+    }
+    @media (min-width: 1424px) {
+      h1 {
+        font-size: 15.8vh;
       }
     }
   </style>
@@ -239,18 +247,19 @@
   <script>
   // Array de pares tipográficos actualizados (todos disponibles en Google Fonts)
   const fontPairs = [
-    ['Bebas Neue', 'Open Sans'],
-    ['Playfair Display', 'Source Sans Pro'],
-    ['Archivo Black', 'Roboto'],
-    ['Crimson Text', 'Work Sans'],
-    ['Montserrat', 'Merriweather'],
-    ['Anton', 'Fira Sans'],
-    ['Oswald', 'Nunito'],
-    ['DM Serif Display', 'Poppins'],
-    ['Abril Fatface', 'Lato'],
-    ['Raleway', 'Lora'],
-    ['Bitter', 'IBM Plex Sans'],
-    ['Space Grotesk', 'Space Mono']
+    // ['Bebas Neue', 'Open Sans'],
+    // ['Playfair Display', 'Source Sans Pro'],
+    // ['Archivo Black', 'Roboto'],
+    // ['Crimson Text', 'Work Sans'],
+    // ['Montserrat', 'Merriweather'],
+    // ['Anton', 'Fira Sans'],
+    // ['Oswald', 'Nunito'],
+    // ['DM Serif Display', 'Poppins'],
+    // ['Abril Fatface', 'Lato'],
+    // ['Raleway', 'Lora'],
+    // ['Bitter', 'IBM Plex Sans'],
+    // ['Space Grotesk', 'Space Mono']
+    ['Be Vietnam Pro', 'DM Sans']
   ];
 
   // Función principal de inicialización
