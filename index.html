@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rodrigo García - Product Designer</title>
   <style>
+    /* Reset y estilos base */
     * {
       margin: 0;
       padding: 0;
@@ -18,11 +19,16 @@
     }
 
     a {
-      &:hover {
-        text-decoration: none;
-      }
+/*      text-decoration: none;*/
+      transition: opacity 0.3s ease;
     }
 
+    a:hover {
+      opacity: 0.7;
+      text-decoration: none;
+    }
+
+    /* Preloader */
     #preloader {
       position: fixed;
       z-index: 9999;
@@ -43,6 +49,7 @@
       background-color: rgba(255, 255, 255, 0.2);
       position: relative;
       overflow: hidden;
+      border-radius: 2px;
     }
 
     #progress {
@@ -50,8 +57,10 @@
       background-color: white;
       width: 0;
       transition: width 0.3s ease;
+      border-radius: 2px;
     }
 
+    /* Layout principal */
     .container {
       display: flex;
       flex-direction: row;
@@ -59,57 +68,6 @@
       width: 100vw;
       transition: all 0.5s ease;
       visibility: hidden;
-    }
-
-    @media (max-width: 1024px) {
-      .container {
-        display: block;
-      }
-
-      .right {
-        padding: 24px !important;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: visible;
-        position: absolute !important;
-        height: 100% !important;
-        width: 100%;
-        top: 0;
-        left: 0;
-      }
-
-      .left {
-        background: white;
-        margin: 24px;
-        width: calc(100% - 48px) !important;
-        height: calc(100% - 48px) !important;
-        height: auto !important;
-        position: absolute;
-        padding: 24px !important;
-        top: 0;
-        left: 0;
-        z-index: 2;
-        opacity: 0.9;
-        position: relative;
-      }
-
-      .floating-img {
-        position: absolute;
-        z-index: 1;
-        animation: none !important;
-        border-radius: 8px;
-      }
-      ul {
-        position: relative !important;
-        bottom: auto !important;
-        margin-top: 1.2em;
-        transform: none !important;
-      }
-      h1, p, ul li {
-        font-size: 2.1vh !important;
-      }
     }
 
     .left, .right {
@@ -122,63 +80,71 @@
       transition: background-color 1s ease;
       overflow: hidden;
       position: relative;
-
-      ul {
-      position: absolute;
-      bottom: 140px;
-      right: -80px;
-      transform: rotate(-90deg);
-        li {
-          list-style: none;
-          display: inline;
-          margin-right: 24px;
-
-          a {
-            text-transform: uppercase;
-          }
-        }
-      }
     }
 
-    h1, p {
-      max-width: 100%;
-      text-align: left;
-    }
-
+    /* Estilos para textos */
     h1 {
-      /* font-size: clamp(1.5rem, 5vw, 4rem); */
-      margin-bottom: 0.6em;
-      font-size: 2.05vw;
+      max-width: 100%;
+    text-align: left;
+    margin-bottom: 0;
+    font-size: 14vh;
+    transform: rotate(180deg);
+    /* position: relative; */
+    top: 0;
+    left: 500px;
+    z-index: 1;
+    width: auto;
+    height: auto;
+    line-height: 1em;
+    writing-mode: vertical-rl;
+    text-align: center;
     }
 
     p, ul li {
-      /* font-size: clamp(1rem, 3vw, 1.6rem); */
-      font-size: 2vw;
+      max-width: 100%;
+      text-align: left;
+      font-size: 1.8vw;
       line-height: 1.5;
       margin-bottom: 1.2em;
-      &.paragraph2 {
-        margin-bottom: 0;
-      }
     }
 
     .text-wrapper {
       width: 100%;
       height: 100%;
-      padding: 2.3vw;
+      padding: 2vw;
       overflow: visible;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      justify-content: space-evenly;
-      #title, .paragraph1, .paragraph2 {
-        width: 90%;
-        /* font-size: clamp(1.1rem, 1.5vw, 3.5vh);*/
-        margin: 0;
-        line-height: 1.2;
-        text-transform: uppercase;
-      }
+      justify-content: start;
+      margin: 80px 0;
     }
 
+    .text-wrapper #title, 
+    .text-wrapper .paragraph1, 
+    .text-wrapper .paragraph2 {
+      width: 90%;
+      line-height: 1.4;
+/*      text-transform: uppercase;*/
+    }
+
+    /* Navegación */
+    /*ul {
+      position: absolute;
+      bottom: 140px;
+      right: -80px;
+      transform: rotate(-90deg);
+    }*/
+
+    ul li {
+      list-style: none;
+      display: inline;
+      margin-right: 24px;
+    }
+
+    ul li a {
+/*      text-transform: uppercase;*/
+    }
+
+    /* Imágenes flotantes - Ajustes corregidos */
     .floating-img {
       position: absolute;
       opacity: 0;
@@ -186,22 +152,66 @@
       max-width: 33%;
       height: auto;
       border-radius: 8px;
+      transition: opacity 1.5s ease;
+      /*      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);*/
     }
 
-    @keyframes floatUp {
-      0% {
-        transform: translateY(100vh);
-        opacity: 0;
+    /* Media queries */
+    @media (max-width: 1024px) {
+      .container {
+        display: block;
       }
-      10% {
-        opacity: 1;
+
+      .right {
+        padding: 24px !important;
+        position: absolute !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: visible;
+        height: 100% !important;
+        width: 100%;
+        top: 0;
+        left: 0;
       }
-      90% {
-        opacity: 1;
+
+      .left {
+        background: white;
+        margin: 24px;
+        width: calc(100% - 48px) !important;
+        height: auto !important;
+        position: relative;
+        padding: 24px !important;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        opacity: 0.9;
+        border-radius: 8px;
       }
-      100% {
-        transform: translateY(-100%);
-        opacity: 0;
+
+      .floating-img {
+        animation: none !important;
+        border-radius: 8px;
+      }
+      
+      ul {
+        position: relative !important;
+        bottom: auto !important;
+        margin-top: 1.2em;
+        transform: none !important;
+        right: auto;
+      }
+      
+      h1, p, ul li {
+        font-size: 2.1vh !important;
+      }
+      h1 {
+        writing-mode: horizontal-tb;
+        transform: none;
+        font-size: 10vh !important;
+        writing-mode: initial;
+        position: relative;
+        left: 0;
       }
     }
   </style>
@@ -214,10 +224,10 @@
   </div>
 
   <div class="container">
+      <h1 id="title">Hi, welcome</h1>
     <div class="left text-wrapper">
-      <h1 id="title">Hi, welcome 👋</h1>
       <p class="paragraph1">I'm Rodrigo García, a Product Designer with over 8 years of experience in user-centered design and a solid 10-year background in front-end development. This site was once my personal portfolio, but after discontinuing the portfolio service, it's now a static page. If you'd like to see my work, feel free to <a class="enlace" href="https://www.linkedin.com/in/rodrigogarciasolis/" target="_blank">request a PDF version</a>.</p>
-      <p class="paragraph2"> Over the years, I’ve worked at design agencies, big companies, and early-stage startups. I design with users in mind, always. My tech background helps me imagine solutions that not only work, but also align with business goals and fit the realities of the product roadmap.</p>
+      <p class="paragraph2"> Over the years, I've worked at design agencies, big companies, and early-stage startups. I design with users in mind, always. My tech background helps me imagine solutions that not only work, but also align with business goals and fit the realities of the product roadmap.</p>
       <ul>
         <li><a class="lista1 enlace" href="https://www.linkedin.com/in/rodrigogarciasolis/" target="_blank">Contact</a></li>
         <li><a class="lista2 enlace" href="https://drive.google.com/file/d/1MJ7_n_PuimtyUmtU6XeYBXW9dSaqpSJK/view" target="_blank">CV</a></li>
@@ -227,149 +237,287 @@
   </div>
 
   <script>
+  // Array de pares tipográficos actualizados (todos disponibles en Google Fonts)
   const fontPairs = [
-      ['Montserrat Black', 'Raleway Regular'], 
-      ['Lobster', 'Open Sans Regular'],
-      ['Ubuntu Bold', 'Nanum Gothic'], 
-      ['Bebas Neue', 'Source Sans Pro'],
-      ['IBM Plex Sans Bold', 'IBM Plex Sans Condensed'], 
-      ['Roboto Black', 'Roboto Mono Light'],
-      ['Abril Fatface', 'Work Sans'], 
-      ['Merriweather Black', 'Lora Regular'],
-      ['Oswald Bold', 'Nunito Semibold'],
-      ['Permanent Marker', 'ABeeZee'], 
-      ['Archivo Black', 'Hind'],
-      ['Alfa Slab One', 'Chivo'], 
-      ['Fjalla One', 'Merriweather Sans'],
-      ['Rokkitt Black', 'Raleway'], 
-      ['Poiret One Bold', 'Didact Gothic'],
-      ['Ultra', 'Slabo 13px'], 
-      ['Francois One', 'Karla'],
-      ['Fugaz One', 'Lato'], 
-      ['Bevan', 'Pontano Sans'],
-      ['Nixie One', 'Prompt'], 
-      ['Sansita Black', 'Overpass'],
-      ['Vollkorn SC Black', 'PT Sans']
-    ];
+    ['Bebas Neue', 'Open Sans'],
+    ['Playfair Display', 'Source Sans Pro'],
+    ['Archivo Black', 'Roboto'],
+    ['Crimson Text', 'Work Sans'],
+    ['Montserrat', 'Merriweather'],
+    ['Anton', 'Fira Sans'],
+    ['Oswald', 'Nunito'],
+    ['DM Serif Display', 'Poppins'],
+    ['Abril Fatface', 'Lato'],
+    ['Raleway', 'Lora'],
+    ['Bitter', 'IBM Plex Sans'],
+    ['Space Grotesk', 'Space Mono']
+  ];
 
-  const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-  const fontLink = document.createElement("link");
-  fontLink.rel = "stylesheet";
-  fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
-  document.head.appendChild(fontLink);
+  // Función principal de inicialización
+  function initializePortfolio() {
+    // Configuración de colores y tipografías
+    setupDesign();
+    
+    // Carga de imágenes
+    loadPortfolioImages();
+  }
 
+  // Configuración de diseño: colores y tipografías
+  function setupDesign() {
+    // Seleccionar un par de fuentes aleatorio
+    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
+    
+    // Cargar fuentes desde Google Fonts
+    const fontLink = document.createElement("link");
+    fontLink.rel = "stylesheet";
+    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
+    document.head.appendChild(fontLink);
+    
+    // Generar esquema de colores
+    const rightColorHSL = getRandomHSL();
+    // Usamos el mismo color base pero con otro tono para el lado izquierdo
+    const leftColorHSL = { 
+      h: (rightColorHSL.h + 180) % 360, 
+      s: rightColorHSL.s, 
+      l: rightColorHSL.l 
+    };
+    const rightColor = hslToCSS(rightColorHSL);
+    const leftColor = hslToCSS(leftColorHSL);
+    
+    // Aplicar estilos
+    applyStyles(titleFont, paragraphFont, leftColor, rightColor);
+  }
+
+  // Funciones de utilidad para colores
   const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-  const getRandomHSL = () => ({ h: Math.floor(Math.random() * 360), s: 25, l: 50 });
-  const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
-  const getTextColor = hsl => hsl.l > 60 ? '#000' : '#fff';
+  const rgbToHSL = (r, g, b) => {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
 
-  const rightColorHSL = getRandomHSL();
-  const leftColorHSL = getComplementaryHSL(rightColorHSL);
-  const rightColor = hslToCSS(rightColorHSL);
-  const leftColor = hslToCSS(leftColorHSL);
-  const textColor = getTextColor(leftColorHSL);
-
-  const title = document.getElementById('title');
-  const paragraph = document.querySelector('.paragraph1');
-  const paragraph2 = document.querySelector('.paragraph2');
-  const paragraph3 = document.querySelector('.lista1');
-  const paragraph4 = document.querySelector('.lista2');
-  const enlaceColor = document.querySelector('.enlace');
-  const left = document.querySelector('.left');
-  const right = document.getElementById('right-container');
-  const container = document.querySelector('.container');
-  const preloader = document.getElementById('preloader');
-  const progress = document.getElementById('progress');
-
-  document.body.style.backgroundColor = rightColor;
-  preloader.style.backgroundColor = rightColor;
-  progress.style.backgroundColor = leftColor;
-
-  title.style.fontFamily = `'${titleFont}', sans-serif`;
-  paragraph.style.fontFamily = `'${paragraphFont}', sans-serif`;
-  paragraph2.style.fontFamily = `'${paragraphFont}', sans-serif`;
-  paragraph3.style.fontFamily = `'${paragraphFont}', sans-serif`;
-  paragraph4.style.fontFamily = `'${paragraphFont}', sans-serif`;
-  left.style.backgroundColor = leftColor;
-  right.style.backgroundColor = rightColor;
-  title.style.color = textColor;
-  paragraph.style.color = textColor;
-  paragraph2.style.color = textColor;
-  paragraph3.style.color = rightColor;
-  paragraph4.style.color = rightColor;
-  enlaceColor.style.color = rightColor;
-
-  const totalImages = 44;
-  let imagesLoaded = 0;
-
-  const imagePaths = Array.from({ length: totalImages }, (_, i) =>
-    `img/portfolio_${String(i + 1).padStart(2, '0')}.png`
-  );
-
-  // Barajar el orden de aparición
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    if (max === min) {
+      h = s = 0; // achromatic
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
     }
-    return array;
+
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      l: Math.round(l * 100)
+    };
+  };
+  
+  // Color base para el fondo (rgb(228, 229, 218) convertido a HSL)
+  const baseBackgroundColorHSL = rgbToHSL(228, 229, 218);
+  
+  // Función para obtener una variación del color base (solo cambia el tono)
+  const getRandomHSL = () => ({
+    h: Math.floor(Math.random() * 360),
+    s: baseBackgroundColorHSL.s,
+    l: baseBackgroundColorHSL.l
+  });
+  
+  // Color fijo para el texto (rgb(45, 40, 37))
+  const fixedTextColor = 'rgb(45, 40, 37)';
+  
+  // Esta función ya no se usa pero la dejamos por compatibilidad
+  const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
+  
+  // Esta función siempre devuelve el color fijo para texto
+  const getTextColor = () => fixedTextColor;
+
+  // Aplicar estilos al DOM
+  function applyStyles(titleFont, paragraphFont, leftColor, rightColor) {
+    const elements = {
+      title: document.getElementById('title'),
+      paragraph1: document.querySelector('.paragraph1'),
+      paragraph2: document.querySelector('.paragraph2'),
+      lista1: document.querySelector('.lista1'),
+      lista2: document.querySelector('.lista2'),
+      left: document.querySelector('.left'),
+      right: document.getElementById('right-container'),
+      preloader: document.getElementById('preloader'),
+      progress: document.getElementById('progress'),
+      container: document.querySelector('.container'),
+      enlaces: document.querySelectorAll('.enlace')
+    };
+    
+    // Color fijo para texto
+    const textColor = fixedTextColor;
+    
+    // Colores de fondo
+    document.body.style.backgroundColor = rightColor;
+    elements.preloader.style.backgroundColor = rightColor;
+    elements.progress.style.backgroundColor = leftColor;
+    elements.left.style.backgroundColor = leftColor;
+    elements.right.style.backgroundColor = rightColor;
+    
+    // Tipografías
+    elements.title.style.fontFamily = `'${titleFont}', sans-serif`;
+    elements.paragraph1.style.fontFamily = `'${paragraphFont}', sans-serif`;
+    elements.paragraph2.style.fontFamily = `'${paragraphFont}', sans-serif`;
+    elements.lista1.style.fontFamily = `'${paragraphFont}', sans-serif`;
+    elements.lista2.style.fontFamily = `'${paragraphFont}', sans-serif`;
+    
+    // Colores de texto
+    elements.title.style.color = textColor;
+    elements.paragraph1.style.color = textColor;
+    elements.paragraph2.style.color = textColor;
+    elements.lista1.style.color = textColor;
+    elements.lista2.style.color = textColor;
+    
+    // Enlaces
+    elements.enlaces.forEach(enlace => {
+      enlace.style.color = textColor;
+    });
   }
 
-  const preloadImages = imagePaths.map(src => {
-    return new Promise(resolve => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        imagesLoaded++;
-        progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
-        resolve(src);
-      };
+  // Cargar y mostrar imágenes del portfolio
+  function loadPortfolioImages() {
+    const totalImages = 44;
+    let imagesLoaded = 0;
+    const progress = document.getElementById('progress');
+    const preloader = document.getElementById('preloader');
+    const container = document.querySelector('.container');
+    
+    // Generar rutas de imágenes
+    const imagePaths = Array.from({ length: totalImages }, (_, i) =>
+      `img/portfolio_${String(i + 1).padStart(2, '0')}.png`
+    );
+    
+    // Precargar imágenes
+    const preloadImages = imagePaths.map(src => {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          imagesLoaded++;
+          progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
+          resolve(src);
+        };
+        img.onerror = () => {
+          imagesLoaded++;
+          progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
+          console.warn(`Failed to load image: ${src}`);
+          resolve(null);
+        };
+      });
     });
-  });
+    
+    // Cuando todas las imágenes estén cargadas
+    Promise.all(preloadImages)
+      .then(loadedSources => {
+        // Filtrar las imágenes que se cargaron correctamente
+        const validSources = loadedSources.filter(src => src !== null);
+        
+        // Ocultar preloader
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+          preloader.remove();
+          container.style.visibility = 'visible';
+          
+          // Iniciar animación de imágenes
+          floatImagesSequentially(validSources);
+        }, 500);
+      })
+      .catch(error => {
+        console.error('Error cargando imágenes:', error);
+        // Asegurar que la página se muestre incluso si hay errores
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+          preloader.remove();
+          container.style.visibility = 'visible';
+        }, 500);
+      });
+  }
 
+  // Función para barajar un array (algoritmo Fisher-Yates)
+  function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
+
+  // Animación secuencial de imágenes flotantes - CORREGIDA
   async function floatImagesSequentially(imageList) {
-  const shuffledImages = shuffleArray([...imageList]);
+    const rightContainer = document.getElementById('right-container');
+    const shuffledImages = shuffleArray([...imageList]);
+    let isRunning = true;
+    let currentlyAnimating = false;
 
-  for (const src of shuffledImages) {
-    const img = document.createElement("img");
-    img.src = src;
-    img.classList.add("floating-img");
-    img.style.position = 'absolute';
-    img.style.left = `${Math.random() * 80 + 10}%`;
-    img.style.bottom = '-20%';
-    img.style.opacity = '0';
-    img.style.transition = 'transform 20s linear, opacity 2s ease';
-    right.appendChild(img);
-
-    // Fuerza el repaint
-    void img.offsetHeight;
-
-    img.style.opacity = '1';
-    img.style.transform = `translateY(-120vh)`;
-
-    // Espera a que haya pasado el umbral antes de mostrar la siguiente
-    await new Promise(resolve => {
-      const checkInterval = setInterval(() => {
-        const rect = img.getBoundingClientRect();
-        if (rect.bottom < window.innerHeight - 40) {
-          clearInterval(checkInterval);
-          resolve();
-        }
-      }, 100);
+    // Crear función para detener animaciones si el usuario navega fuera
+    window.addEventListener('beforeunload', () => {
+      isRunning = false;
     });
 
-    setTimeout(() => img.remove(), 20000);
-  }
-}
+    // Bucle continuo para mostrar imágenes indefinidamente
+    while (isRunning) {
+      for (const src of shuffledImages) {
+        if (!isRunning) break;
+        
+        // Esperar a que la imagen anterior haya recorrido parte del camino
+        if (currentlyAnimating) {
+          await new Promise(resolve => setTimeout(resolve, 2000)); // Esperar entre imágenes
+        }
+        
+        currentlyAnimating = true;
+        
+        const img = document.createElement("img");
+        img.src = src;
+        img.classList.add("floating-img");
+        img.style.left = `${Math.random() * 60 + 20}%`; // Ajuste para mejor posicionamiento horizontal
+        img.style.bottom = '-20%'; // Empieza fuera de la pantalla por abajo
+        img.style.transition = 'transform 15s linear, opacity 1.5s ease';
+        rightContainer.appendChild(img);
 
-  Promise.all(preloadImages).then(loadedSources => {
-    preloader.style.opacity = '0';
-    setTimeout(() => {
-      preloader.remove();
-      container.style.visibility = 'visible';
-      floatImagesSequentially(loadedSources);
-    }, 500);
-  });
-</script>
+        // Forzar repaint
+        void img.offsetHeight;
+
+        // Iniciar la animación con fade-in
+        setTimeout(() => {
+          img.style.opacity = '1';
+          img.style.transform = 'translateY(-120vh)'; // Mover hacia arriba
+        }, 50);
+
+        // Controlar el fade-out cuando la imagen llega a la parte superior
+        setTimeout(() => {
+          img.style.opacity = '0';
+          
+          // Eliminar imagen después de que se haya desvanecido
+          setTimeout(() => {
+            img.remove();
+          }, 1500);
+        }, 13500); // Tiempo antes de iniciar fade-out
+        
+        // Esperar antes de permitir que la siguiente imagen comience
+        await new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+          }, 3000); // Tiempo antes de permitir la siguiente imagen
+        });
+      }
+      
+      // Barajar de nuevo las imágenes para la próxima iteración
+      shuffleArray(shuffledImages);
+    }
+  }
+
+  // Inicializar
+  document.addEventListener('DOMContentLoaded', initializePortfolio);
+  </script>
 </body>
 </html>
