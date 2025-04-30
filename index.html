@@ -11,11 +11,30 @@
       padding: 0;
       box-sizing: border-box;
     }
+    @font-face {
+        font-family: 'PP Nikkei Maru';
+        src: url('img/fonts/PPNikkeiMaru-Light.woff2') format('woff2'),
+            url('img/fonts/PPNikkeiMaru-Light.woff') format('woff');
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: 'PP Nikkei Maru';
+        src: url('img/fonts/PPNikkeiMaru-Ultrabold.woff2') format('woff2'),
+            url('img/fonts/PPNikkeiMaru-Ultrabold.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;
+        font-display: swap;
+    }
 
     html, body {
       height: 100%;
       overflow: hidden;
       font-family: sans-serif;
+      font-family: 'PP Nikkei Maru';
+      color: rgb(45, 40, 37);
     }
 
     a {
@@ -87,7 +106,7 @@
       max-width: 100%;
     text-align: left;
     margin-bottom: 0;
-    font-size: 15.8vh;
+    font-size: 16.6vh;
     transform: rotate(180deg);
     /* position: relative; */
     top: 0;
@@ -99,7 +118,8 @@
     writing-mode: vertical-rl;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: -0.8rem;
+    letter-spacing: -0.4rem;
+    font-weight: bold;
     }
 
     p, ul li {
@@ -171,7 +191,7 @@
       height: auto;
       border-radius: 8px;
       transition: opacity 1.5s ease;
-      /*      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);*/
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     }
 
     /* Media queries */
@@ -195,8 +215,8 @@
 
       .left {
         background: white;
-        margin: 12px;
-        width: calc(100% - 24px) !important;
+        margin: 0;
+        width: 100%;
         height: auto !important;
         position: relative;
         padding: 24px !important;
@@ -231,16 +251,16 @@
       h1 {
         writing-mode: horizontal-tb;
         transform: none;
-        font-size: 7.5vh !important;
+        font-size: 7.6vh !important;
         writing-mode: initial;
         position: relative;
         left: 0;
-        letter-spacing: -0.4rem;
+        letter-spacing: -0.1rem;
       }
     }
     @media (min-width: 1513px) {
       h1 {
-        font-size: 15.8vh;
+        font-size: 16.8vh;
       }
       .text-wrapper {
         margin: 24px 0;
@@ -275,177 +295,46 @@
     <div class="right" id="right-container"></div>
   </div>
 
-  <script>
-  // Array de pares tipográficos actualizados (todos disponibles en Google Fonts)
-  const fontPairs = [
-    // ['Bebas Neue', 'Open Sans'],
-    // ['Playfair Display', 'Source Sans Pro'],
-    // ['Archivo Black', 'Roboto'],
-    // ['Crimson Text', 'Work Sans'],
-    // ['Montserrat', 'Merriweather'],
-    // ['Anton', 'Fira Sans'],
-    // ['Oswald', 'Nunito'],
-    // ['DM Serif Display', 'Poppins'],
-    // ['Abril Fatface', 'Lato'],
-    // ['Raleway', 'Lora'],
-    // ['Bitter', 'IBM Plex Sans'],
-    // ['Space Grotesk', 'Space Mono']
-    ['Be Vietnam Pro', 'DM Sans']
-  ];
+ <script>
+  // Tipografía usada
+  const fontPair = ['Be Vietnam Pro', 'DM Sans'];
 
-  // Función principal de inicialización
+  // Inicialización principal
   function initializePortfolio() {
-    // Configuración de colores y tipografías
     setupDesign();
-    
-    // Carga de imágenes
     loadPortfolioImages();
   }
 
-  // Configuración de diseño: colores y tipografías
+  // Configuración de diseño
   function setupDesign() {
-    // Seleccionar un par de fuentes aleatorio
-    const [titleFont, paragraphFont] = fontPairs[Math.floor(Math.random() * fontPairs.length)];
-    
-    // Cargar fuentes desde Google Fonts
-    const fontLink = document.createElement("link");
-    fontLink.rel = "stylesheet";
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${titleFont.replace(/ /g, '+')}&family=${paragraphFont.replace(/ /g, '+')}&display=swap`;
-    document.head.appendChild(fontLink);
-    
-    // Generar esquema de colores
-    const rightColorHSL = getRandomHSL();
-    // Usamos el mismo color base pero con otro tono para el lado izquierdo
-    const leftColorHSL = { 
-      h: (rightColorHSL.h + 180) % 360, 
-      s: rightColorHSL.s, 
-      l: rightColorHSL.l 
-    };
-    const rightColor = hslToCSS(rightColorHSL);
-    const leftColor = hslToCSS(leftColorHSL);
-    
-    // Aplicar estilos
-    applyStyles(titleFont, paragraphFont, leftColor, rightColor);
+    // Aquí podrías aplicar tipografías y colores si lo necesitas
+    // Por ahora está vacío por compatibilidad
   }
 
-  // Funciones de utilidad para colores
-  const hslToCSS = ({ h, s, l }) => `hsl(${h}, ${s}%, ${l}%)`;
-  const rgbToHSL = (r, g, b) => {
-    r /= 255;
-    g /= 255;
-    b /= 255;
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h, s, l = (max + min) / 2;
-
-    if (max === min) {
-      h = s = 0; // achromatic
-    } else {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch (max) {
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
-      }
-      h /= 6;
-    }
-
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      l: Math.round(l * 100)
-    };
-  };
-  
-  // Color base para el fondo (rgb(228, 229, 218) convertido a HSL)
-  const baseBackgroundColorHSL = rgbToHSL(228, 229, 218);
-  
-  // Función para obtener una variación del color base (solo cambia el tono)
-  const getRandomHSL = () => ({
-    h: Math.floor(Math.random() * 360),
-    s: baseBackgroundColorHSL.s,
-    l: baseBackgroundColorHSL.l
-  });
-  
-  // Color fijo para el texto (rgb(45, 40, 37))
-  const fixedTextColor = 'rgb(45, 40, 37)';
-  
-  // Esta función ya no se usa pero la dejamos por compatibilidad
-  const getComplementaryHSL = hsl => ({ h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l });
-  
-  // Esta función siempre devuelve el color fijo para texto
-  const getTextColor = () => fixedTextColor;
-
-  // Aplicar estilos al DOM
-  function applyStyles(titleFont, paragraphFont, leftColor, rightColor) {
-    const elements = {
-      title: document.getElementById('title'),
-      paragraph1: document.querySelector('.paragraph1'),
-      paragraph2: document.querySelector('.paragraph2'),
-      lista1: document.querySelector('.lista1'),
-      lista2: document.querySelector('.lista2'),
-      left: document.querySelector('.left'),
-      right: document.getElementById('right-container'),
-      preloader: document.getElementById('preloader'),
-      progress: document.getElementById('progress'),
-      container: document.querySelector('.container'),
-      enlaces: document.querySelectorAll('.enlace')
-    };
-    
-    // Color fijo para texto
-    const textColor = fixedTextColor;
-    
-    // Colores de fondo
-    document.body.style.backgroundColor = rightColor;
-    elements.preloader.style.backgroundColor = rightColor;
-    elements.progress.style.backgroundColor = leftColor;
-    elements.left.style.backgroundColor = leftColor;
-    elements.right.style.backgroundColor = rightColor;
-    
-    // Tipografías
-    elements.title.style.fontFamily = `'${titleFont}', sans-serif`;
-    elements.paragraph1.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    elements.paragraph2.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    elements.lista1.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    elements.lista2.style.fontFamily = `'${paragraphFont}', sans-serif`;
-    
-    // Colores de texto
-    elements.title.style.color = textColor;
-    elements.paragraph1.style.color = textColor;
-    elements.paragraph2.style.color = textColor;
-    elements.lista1.style.color = textColor;
-    elements.lista2.style.color = textColor;
-    
-    // Enlaces
-    elements.enlaces.forEach(enlace => {
-      enlace.style.color = textColor;
-    });
-  }
-
-  // Cargar y mostrar imágenes del portfolio
+  // Precargar y mostrar imágenes del portfolio con animación
   function loadPortfolioImages() {
     const totalImages = 44;
     let imagesLoaded = 0;
+
     const progress = document.getElementById('progress');
     const preloader = document.getElementById('preloader');
     const container = document.querySelector('.container');
-    
-    // Generar rutas de imágenes
+
     const imagePaths = Array.from({ length: totalImages }, (_, i) =>
       `img/portfolio_${String(i + 1).padStart(2, '0')}.png`
     );
-    
-    // Precargar imágenes
+
     const preloadImages = imagePaths.map(src => {
       return new Promise(resolve => {
         const img = new Image();
         img.src = src;
+
         img.onload = () => {
           imagesLoaded++;
           progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
           resolve(src);
         };
+
         img.onerror = () => {
           imagesLoaded++;
           progress.style.width = `${(imagesLoaded / totalImages) * 100}%`;
@@ -454,26 +343,20 @@
         };
       });
     });
-    
-    // Cuando todas las imágenes estén cargadas
+
     Promise.all(preloadImages)
       .then(loadedSources => {
-        // Filtrar las imágenes que se cargaron correctamente
         const validSources = loadedSources.filter(src => src !== null);
-        
-        // Ocultar preloader
+
         preloader.style.opacity = '0';
         setTimeout(() => {
           preloader.remove();
           container.style.visibility = 'visible';
-          
-          // Iniciar animación de imágenes
           floatImagesSequentially(validSources);
         }, 500);
       })
       .catch(error => {
         console.error('Error cargando imágenes:', error);
-        // Asegurar que la página se muestre incluso si hay errores
         preloader.style.opacity = '0';
         setTimeout(() => {
           preloader.remove();
@@ -482,7 +365,7 @@
       });
   }
 
-  // Función para barajar un array (algoritmo Fisher-Yates)
+  // Algoritmo Fisher-Yates para barajar arrays
   function shuffleArray(array) {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
@@ -492,72 +375,58 @@
     return newArray;
   }
 
-  // Animación secuencial de imágenes flotantes - CORREGIDA
+  // Animación continua de imágenes flotantes
   async function floatImagesSequentially(imageList) {
     const rightContainer = document.getElementById('right-container');
-    const shuffledImages = shuffleArray([...imageList]);
+    const shuffledImages = shuffleArray(imageList);
     let isRunning = true;
     let currentlyAnimating = false;
 
-    // Crear función para detener animaciones si el usuario navega fuera
     window.addEventListener('beforeunload', () => {
       isRunning = false;
     });
 
-    // Bucle continuo para mostrar imágenes indefinidamente
     while (isRunning) {
       for (const src of shuffledImages) {
         if (!isRunning) break;
-        
-        // Esperar a que la imagen anterior haya recorrido parte del camino
+
         if (currentlyAnimating) {
-          await new Promise(resolve => setTimeout(resolve, 2000)); // Esperar entre imágenes
+          await new Promise(resolve => setTimeout(resolve, 2000));
         }
-        
+
         currentlyAnimating = true;
-        
+
         const img = document.createElement("img");
         img.src = src;
         img.classList.add("floating-img");
-        img.style.left = `${Math.random() * 60 + 20}%`; // Ajuste para mejor posicionamiento horizontal
-        img.style.bottom = '-20%'; // Empieza fuera de la pantalla por abajo
+        img.style.left = `${Math.random() * 60 + 20}%`;
+        img.style.bottom = '-20%';
         img.style.transition = 'transform 15s linear, opacity 1.5s ease';
         rightContainer.appendChild(img);
 
         // Forzar repaint
         void img.offsetHeight;
 
-        // Iniciar la animación con fade-in
         setTimeout(() => {
           img.style.opacity = '1';
-          img.style.transform = 'translateY(-120vh)'; // Mover hacia arriba
+          img.style.transform = 'translateY(-120vh)';
         }, 50);
 
-        // Controlar el fade-out cuando la imagen llega a la parte superior
         setTimeout(() => {
           img.style.opacity = '0';
-          
-          // Eliminar imagen después de que se haya desvanecido
-          setTimeout(() => {
-            img.remove();
-          }, 1500);
-        }, 13500); // Tiempo antes de iniciar fade-out
-        
-        // Esperar antes de permitir que la siguiente imagen comience
-        await new Promise(resolve => {
-          setTimeout(() => {
-            resolve();
-          }, 3000); // Tiempo antes de permitir la siguiente imagen
-        });
+          setTimeout(() => img.remove(), 1500);
+        }, 13500);
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
       }
-      
-      // Barajar de nuevo las imágenes para la próxima iteración
+
       shuffleArray(shuffledImages);
     }
   }
 
-  // Inicializar
+  // Ejecutar inicialización al cargar el DOM
   document.addEventListener('DOMContentLoaded', initializePortfolio);
-  </script>
+</script>
+
 </body>
 </html>
